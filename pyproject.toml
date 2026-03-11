@@ -1,0 +1,11 @@
+[project]
+name = "res-pydantic-agent"
+version = "0.1.0"
+description = "Interactive Pydantic AI agent using pyResToolbox MCP server for reservoir engineering calculations"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic-ai>=0.0.49",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "rich>=13.0.0",
+]
