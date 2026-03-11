@@ -121,7 +121,7 @@ The agent remembers your conversation — ask follow-up questions without repeat
 git clone https://github.com/gabrielserrao/pyrestoolbox-mcp.git
 
 # Clone this agent
-git clone https://github.com/gabrielserrao/resEngineerAgent-.git res-pydantic-agent
+git clone https://github.com/gabrielserrao/resEngineerAgent.git res-pydantic-agent
 
 # Your directory structure should look like:
 # some-folder/
