@@ -66,7 +66,7 @@ def get_mcp_server_path() -> str:
 def load_skill() -> str:
     """Load the pyResToolbox skill content (strips YAML front-matter)."""
     script_dir = Path(__file__).parent.absolute()
-    skill_path = script_dir.parent / "pyrestoolbox-mcp" / "SKILL" / "SKILL.md"
+    skill_path = script_dir / "SKILL" / "SKILL.md"
 
     if not skill_path.exists():
         return ""
