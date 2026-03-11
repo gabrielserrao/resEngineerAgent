@@ -249,6 +249,20 @@ usage_limits=UsageLimits(
 
 ---
 
+## Claude Code Skill
+
+The `SKILL/` directory contains a ready-to-use Claude Code skill for the pyResToolbox MCP server:
+
+| File | Description |
+|---|---|
+| `SKILL/SKILL.md` | Skill definition — teaches Claude which tools to use and when |
+| `SKILL/tools-reference.md` | Full reference for all 108 tools with parameters and examples |
+| `SKILL/pyrestoolbox-mcp.skill` | Packaged skill file for direct import into Claude Code |
+
+To install the skill in Claude Code, import `SKILL/pyrestoolbox-mcp.skill` via the Claude Code skill manager.
+
+---
+
 ## Project Structure
 
 ```
@@ -258,6 +272,10 @@ res-pydantic-agent/
 ├── test_agent.py          # End-to-end agent test
 ├── pyproject.toml         # Dependencies (pydantic-ai, rich, python-dotenv)
 ├── .env.example           # Environment variable template
+├── SKILL/
+│   ├── SKILL.md                  # Claude Code skill definition
+│   ├── tools-reference.md        # Full 108-tool reference
+│   └── pyrestoolbox-mcp.skill    # Packaged skill for import
 ├── .gitignore
 ├── LICENSE                # GPL-3.0
 └── README.md
