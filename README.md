@@ -9,7 +9,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Pydantic AI](https://img.shields.io/badge/Pydantic%20AI-0.0.49+-red.svg)](https://ai.pydantic.dev/)
-[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-green.svg)](https://openai.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4.5-green.svg)](https://openai.com/)
 [![Built with pyResToolbox](https://img.shields.io/badge/Built%20with-pyResToolbox-orange.svg)](https://github.com/mwburgoyne/pyResToolbox)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-yellow.svg?logo=buy-me-a-coffee)](https://buymeacoffee.com/gabrielsero)
 
@@ -224,7 +224,8 @@ Edit `interactive_agent.py`:
 
 ```python
 agent = Agent(
-    'openai:gpt-4o',          # GPT-4o (default)
+    'openai:gpt-4.5',         # GPT-4.5 (default)
+    # 'openai:gpt-4o',        # previous generation
     # 'openai:gpt-4o-mini',   # cheaper / faster
     # 'anthropic:claude-sonnet-4-5',  # Claude
     # 'google-gla:gemini-2.0-flash-exp',
