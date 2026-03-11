@@ -36,6 +36,8 @@ from rich.text import Text
 from rich.syntax import Syntax
 from rich.layout import Layout
 from rich.align import Align
+from rich.rule import Rule
+from rich.padding import Padding
 from rich import box
 from rich.live_render import LiveRender
 
@@ -143,94 +145,84 @@ def create_agent() -> Agent:
     return agent
 
 
-def create_welcome_panel() -> Panel:
-    """Create a welcome panel."""
-    welcome_text = """
-[bold cyan]pyResToolbox Interactive Agent[/bold cyan]
+def create_splash() -> Panel:
+    """Create a visually striking splash screen with capabilities grid."""
+    main = Table.grid(expand=True)
+    main.add_column(justify="center")
 
-This agent has access to [bold green]108 specialized tools[/bold green] for reservoir engineering:
-
-• Oil & Gas PVT Properties
-• Well Performance & Inflow Calculations  
-• Relative Permeability Tables
-• Brine Properties & CO₂ Sequestration
-• Reservoir Heterogeneity Analysis
-• Component Library Access
-
-[dim]Type 'help' for examples, 'quit' to exit[/dim]
-    """
-    return Panel(
-        welcome_text,
-        title="[bold]Welcome[/bold]",
-        border_style="cyan",
-        box=box.ROUNDED
+    # ── Title ────────────────────────────────────────────────────────
+    title = Text(justify="center")
+    title.append("\n")
+    title.append("RESERVOIR ENGINEERING  AI AGENT", style="bold white")
+    title.append("\n")
+    title.append(
+        "pyResToolbox MCP  ·  108 Tools  ·  GPT-5.4  ·  Field & Metric Units",
+        style="dim cyan",
     )
+    title.append("\n")
+    main.add_row(Align(title, align="center"))
 
+    # ── Divider ──────────────────────────────────────────────────────
+    main.add_row(Rule(style="bright_black"))
 
-def create_tips_panel() -> Panel:
-    """Create a tips panel with guidance for users."""
-    tips_text = """
-[bold yellow]💡 Tips for Better Results:[/bold yellow]
-
-[cyan]1. Be Specific[/cyan]
-   ✓ "Calculate bubble point for API 35 oil at 180°F, GOR 800 scf/stb"
-   ✗ "Calculate bubble point"
-
-[cyan]2. Include Units[/cyan]
-   ✓ "Temperature: 180°F, Pressure: 3500 psia"
-   ✓ "Permeability: 100 mD, Thickness: 50 ft"
-
-[cyan]3. Ask Follow-up Questions[/cyan]
-   The agent remembers our conversation, so you can ask:
-   "What about at 200°F?" or "Calculate the viscosity too"
-
-[cyan]4. Request Multiple Calculations[/cyan]
-   ✓ "Calculate bubble point, FVF, and viscosity for API 35 oil"
-   ✓ "Generate a complete PVT table"
-
-[cyan]5. Use Natural Language[/cyan]
-   ✓ "What's the Z-factor for this gas?"
-   ✓ "How much oil can this well produce?"
-
-[dim]Remember: The agent maintains conversation context, so you can reference previous values![/dim]
-    """
-    return Panel(
-        tips_text,
-        title="[bold]Getting Started Tips[/bold]",
-        border_style="yellow",
-        box=box.ROUNDED
+    # ── Capabilities 3-column grid ───────────────────────────────────
+    caps = Table.grid(padding=(0, 4))
+    caps.add_column(min_width=26)
+    caps.add_column(min_width=26)
+    caps.add_column(min_width=26)
+    caps.add_row(
+        Text.assemble(("  Oil & Gas PVT\n", "bold cyan"),     ("  Bubble pt · Z-factor · FVF", "dim")),
+        Text.assemble(("  Well Performance\n", "bold cyan"),  ("  IPR · AOF · skin · PI", "dim")),
+        Text.assemble(("  Geomechanics\n", "bold cyan"),      ("  Stress · fracture · stability", "dim")),
     )
+    caps.add_row("", "", "")
+    caps.add_row(
+        Text.assemble(("  Nodal Analysis\n", "bold cyan"),    ("  VLP/IPR operating point", "dim")),
+        Text.assemble(("  DCA & Decline\n", "bold cyan"),     ("  Arps · Duong · EUR", "dim")),
+        Text.assemble(("  Material Balance\n", "bold cyan"),  ("  P/Z · Havlena-Odeh · OGIP", "dim")),
+    )
+    caps.add_row("", "", "")
+    caps.add_row(
+        Text.assemble(("  Rel Permeability\n", "bold cyan"),  ("  Corey · LET · SWOF/SGOF", "dim")),
+        Text.assemble(("  Brine & CO\u2082\n", "bold cyan"),  ("  PVT · solubility · density", "dim")),
+        Text.assemble(("  Simulation Tools\n", "bold cyan"),  ("  Aquifer · flash · ECLIPSE", "dim")),
+    )
+    main.add_row(Align(caps, align="center"))
+
+    # ── Footer ───────────────────────────────────────────────────────
+    footer = Text(justify="center")
+    footer.append("\n")
+    footer.append("  help ", style="bold white on #1a4a6b")
+    footer.append(" show examples   ", style="dim")
+    footer.append("  quit ", style="bold white on #1a4a6b")
+    footer.append(" exit\n", style="dim")
+    main.add_row(Align(footer, align="center"))
+
+    return Panel(main, border_style="#2980b9", box=box.DOUBLE_EDGE, padding=(0, 2))
 
 
 def create_help_panel() -> Panel:
-    """Create a help panel with example queries."""
-    help_text = """
-[bold]Example Queries:[/bold]
+    """Create a help panel with example queries in a clean table layout."""
+    t = Table.grid(padding=(0, 3))
+    t.add_column(style="bold cyan", min_width=20, no_wrap=True)
+    t.add_column(style="white")
 
-[cyan]PVT Calculations:[/cyan]
-  • Calculate bubble point for API 35 oil at 180°F, GOR 800 scf/stb
-  • What is the Z-factor for gas SG 0.7 at 3500 psia and 180°F?
-  • Calculate oil viscosity at 3000 psia for API 35 oil
+    t.add_row("PVT",              "bubble point, Z-factor, FVF, viscosity, density, compressibility")
+    t.add_row("Well Performance", "oil/gas rate, IPR, AOF, skin, PI — radial & linear flow")
+    t.add_row("Nodal Analysis",   "VLP/IPR operating point, sensitivity sweeps")
+    t.add_row("DCA",              "Arps, Duong, ratio methods — EUR, rate forecast")
+    t.add_row("Material Balance", "gas P/Z plot, Havlena-Odeh, OGIP/OOIP estimation")
+    t.add_row("Simulation",       "SWOF/SGOF tables, aquifer influence, Rachford-Rice flash")
+    t.add_row("Geomechanics",     "stress gradients, fracture gradient, mud weight window")
+    t.add_row("Brine & CO\u2082", "CH\u2084/CO\u2082 saturated brine PVT, mutual solubility")
+    t.add_row("", "")
+    t.add_row("[dim]commands[/dim]", "[dim]help  ·  quit  ·  exit[/dim]")
 
-[cyan]Well Performance:[/cyan]
-  • Calculate oil rate for vertical well: Pi=4000, Pb=3500, API=35, k=100 mD
-  • What is the gas rate for horizontal well with these parameters...
-
-[cyan]Simulation Tools:[/cyan]
-  • Generate relative permeability table (SWOF) using Corey correlation
-  • Create aquifer influence table for dimensionless radius 10.0
-
-[cyan]Component Properties:[/cyan]
-  • What are the critical properties of methane?
-  • Get ethane properties from component library
-
-[dim]Commands: 'help' - show this, 'quit'/'exit'/'q' - exit[/dim]
-    """
     return Panel(
-        help_text,
-        title="[bold]Help[/bold]",
-        border_style="yellow",
-        box=box.ROUNDED
+        Padding(t, (1, 2)),
+        title="[bold cyan]Examples[/bold cyan]",
+        border_style="#2980b9",
+        box=box.ROUNDED,
     )
 
 
@@ -282,30 +274,30 @@ async def run_with_tool_tracking(agent: Agent, query: str, conversation_history:
 
 async def interactive_session():
     """Run an interactive session with the agent."""
-    # Clear screen and show welcome
+    # Clear screen and show splash
     console.clear()
-    console.print(create_welcome_panel())
+    console.print(create_splash())
     console.print()
-    
+
     # Check API key
     api_key = os.getenv('OPENAI_API_KEY')
     if not api_key:
         console.print(
             Panel(
-                "[bold red]ERROR: OPENAI_API_KEY not set![/bold red]\n\n"
-                "Please set it with: [cyan]export OPENAI_API_KEY='your-key'[/cyan]\n"
-                "Or create a .env file with: [cyan]OPENAI_API_KEY=your-key[/cyan]",
+                "[bold red]OPENAI_API_KEY not set.[/bold red]\n\n"
+                "Set it with: [cyan]export OPENAI_API_KEY='your-key'[/cyan]\n"
+                "Or create a [cyan].env[/cyan] file: [cyan]OPENAI_API_KEY=your-key[/cyan]",
                 title="[bold red]Configuration Error[/bold red]",
-                border_style="red"
+                border_style="red",
+                box=box.ROUNDED,
             )
         )
         return
-    
+
     # Create agent
-    with console.status("[bold cyan]Initializing agent and connecting to MCP server...", spinner="dots"):
+    with console.status("[bold cyan]Connecting to MCP server...", spinner="dots"):
         try:
             agent = create_agent()
-            # Try to enable MCP sampling
             try:
                 agent.set_mcp_sampling_model()
                 mcp_sampling = True
@@ -316,24 +308,20 @@ async def interactive_session():
                 Panel(
                     f"[bold red]Failed to create agent:[/bold red]\n{str(e)}",
                     title="[bold red]Error[/bold red]",
-                    border_style="red"
+                    border_style="red",
+                    box=box.ROUNDED,
                 )
             )
             return
-    
+
+    sampling_label = "on" if mcp_sampling else "off"
     console.print(
-        Panel(
-            f"[bold green]✓ Agent initialized successfully[/bold green]\n"
-            f"[dim]MCP Sampling: {'Enabled' if mcp_sampling else 'Disabled'}[/dim]\n"
-            f"[dim]Conversation Memory: Enabled[/dim]",
-            border_style="green",
-            box=box.ROUNDED
+        Rule(
+            f"[bold green] Ready [/bold green]  "
+            f"[dim]model: gpt-5.4  ·  mcp sampling: {sampling_label}  ·  memory: on[/dim]",
+            style="green",
         )
     )
-    console.print()
-    
-    # Show tips panel
-    console.print(create_tips_panel())
     console.print()
     
     # Initialize conversation history for memory
