@@ -135,7 +135,7 @@ def create_agent() -> Agent:
 
     # Create agent with MCP tools
     agent = Agent(
-        'openai:gpt-4.5',
+        'openai:gpt-5.4',
         toolsets=[mcp_server],
         system_prompt=system_prompt,
     )
